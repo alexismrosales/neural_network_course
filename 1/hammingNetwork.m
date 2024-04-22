@@ -3,17 +3,17 @@ load('./data/inputdata.mat');
 % checkUniqueNeuron(v). La función representa la condición número uno
 % para terminar la recurrencia es que solo una neurona sea mayor a cero
 % y todas las demás cero.
-function unique= checkUniqueNeuron(v)
-unique = false;
+function single =  checkSingleActiveOutput(v)
+single = false;
 for i = 1:length(v)
-  if(v(i) > 0)
-    if(unique)
-      unique = false;
-      break;
-    else
-      unique = true;
+    if(v(i) > 0)
+        if(single)
+            single = false;
+            break;
+        else
+            single = true;
+        end
     end
-  end
 end
 end
 
@@ -22,9 +22,9 @@ end
 % la segunda iteración.
 function coincidence = findCoincidence(v1,v2)
 if v1 == v2
-  coincidence = true;
+    coincidence = true;
 else
-  coincidence = false;
+    coincidence = false;
 end
 end
 
@@ -43,7 +43,7 @@ a = posslin(n);
 end
 
 % HammingNetwork(W1, b, e, p). Función principal
-function [a2Values , output] = HammingNetwork(W1, b, e , p)
+function a2Values = HammingNetwork(W1, b, e , p, S)
 a2Values = [];
 
 % Feedfoward layer
@@ -52,22 +52,27 @@ a2Values = [];
 n = W1 * p + b ;
 %   Función Purelin(n)
 a1 = n;
-
 % Recurrent Layer
 % Segunda capa
 %   Asignando a2(0) = a(0)
 a2 = a1;
-a2Values = vertcat(a2Values, a2);
+a2Values = horzcat(a2Values, a2);
 %   Creando W2 con epsilon
-W2 = [ 1, -1 * e ; -1 * e,  1];
-last = posslin(W2 * a2); % a2(1) = a2()
+%     Creando matriz SxS, con -epsilon
+W2 = ones(S) * -1 * e;
+%     Llenando la diagonal con -1
+W2(logical(eye(size(W2)))) = 1;
 
+%     Representa a2(1) = posslin(W2 a(0))
+last = posslin(W2 * a2); % a2(1) = a2()
+% Variable que servira para contar ciertas iteraciones
 it100 = 0;
+
 % El blucle terminara cuando se cumplan las primera dos condiciones
 while true
   actual = computeA2(last, W2);
   % Si se cumplen las dos condiciones se rompera el bucle
-  if (findCoincidence(last, actual) && checkUniqueNeuron(actual)) || it100 == 100
+  if (findCoincidence(last, actual) && checkSingleActiveOutput(actual)) || it100 == 100  % ------IMPORTANTE REMOVER SI NO SE DESEAN HACER UN MÁXIMO DE 100 ITERACIONES
     break;
   else
     % Agregnado los vectores a la lista de valores de a2
@@ -78,11 +83,23 @@ while true
 end
 % Añadiendo el ultimo valor
 a2Values = horzcat(a2Values, actual);
-
-output = "xd";
-
 end
 
+function main(W, b, e, p, S)
 % Obteniendo la información
-[a2Values, ~] = HammingNetwork(W, b, e, p);
+a2Values = HammingNetwork(W, b, e, p, S);
 disp(a2Values);
+% Asignando los valores a graficar
+x_coords = 1:length(a2Values(1, :));
+y_coords = a2Values';
+
+% Graficando los datos
+figure;
+plot(x_coords, y_coords, '-o');
+xlabel('Tiempo');
+ylabel('Neuronas');
+
+grid on;
+end
+
+main(W, b, e, p, S);

@@ -48,6 +48,7 @@ experiment = input('Ingrese el número de experimento del que desea cargar los da
 experiment = num2str(experiment);
 [W, S, R] = getDataM(experiment,'w.txt');
 b = getData(experiment,'b.txt');
+format shortE
 e = getData(experiment,'e.txt');
 p = getData(experiment,'p.txt');
 
