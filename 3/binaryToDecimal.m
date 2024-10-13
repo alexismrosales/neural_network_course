@@ -53,11 +53,11 @@ disp('Se muestran los datos a continuación: ');
 disp('Target | Resultado');
 % Se realiza una epóca de verificación
 for i = 1:num_rows
-    row = data(i, :);
-    p = row(1:end -1);
-    t = row(end);
-    a = W * p';
-    fprintf(' %4.2f  |   %4.2f\n',t,a);
+  row = data(i, :);
+  p = row(1:end -1);
+  t = row(end);
+  a = W * p';
+  fprintf(' %4.2f  |   %4.2f\n',t,a);
 end
 end
 
@@ -70,8 +70,8 @@ figure;
 
 % Grafica cada columna como una curva
 for i = 1:numCurves
-    plot(resultsW(:, i), 'DisplayName', ['Curva peso ' num2str(i)]);
-    hold on;
+  plot(resultsW(:, i), 'DisplayName', ['Curva peso ' num2str(i)]);
+  hold on;
 end
 plot(resultsErr, 'DisplayName', 'Curva error');
 hold off;
@@ -88,7 +88,7 @@ table = createTable(bits);
 % Asignando valores de error y máximo de epócas
 epochs = 200;
 errRange = 0.1;
-epochsErr = 0.001;
+epochsErr = 0.01;
 [W, resultsW, resultsErr] = adaline(table, epochs, errRange, epochsErr);
 test(table, W);
 drawPlot(resultsW, resultsErr);

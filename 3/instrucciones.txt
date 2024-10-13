@@ -1,0 +1,6 @@
+Clasificador:
+1. Ejecutar archivo inputdata.m 
+2. Seguir instrucciones
+3. Ejecutar el archivo classication.m 
+Regresor:
+1. Ejecutar archivo binaryToDecimal.m

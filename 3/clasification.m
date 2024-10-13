@@ -8,7 +8,7 @@ end
 
 function [W, b] = adaline(inputAndPrototypes, epochsLimit, errRange, maxErr, W, b)
 % Inicializando la matriz de pesos con valores aleatorios
-[num_rows, num_cols] = size(inputAndPrototypes);
+[num_rows, ~] = size(inputAndPrototypes);
 epochs = 0;
 % Iterando sobre el número de epócas
 while(epochs <= epochsLimit)
@@ -38,6 +38,8 @@ while(epochs <= epochsLimit)
 end
 disp('W es:');
 disp(W);
+disp('b es:');
+disp(b);
 end
 
 
@@ -141,7 +143,7 @@ end
 function main(M, T, epochs, classes)
 % Variables dadas por el usuario
 errRange = 0.000001;
-epochsErr = 0.01;
+epochsErr = 0.0001;
 % Juntando los targets en la matriz de inputs y colocandolos en la última columna
 M = normalize(M(:, 1:end));
 M = horzcat(M, T);

@@ -161,6 +161,7 @@ test_set = M(end-2:end, :);
 % Inicializando los datos con valores aleatorios para comenzar el entrenamiento
 [W, b] = initializingWeightAndBias(size(inputAndPrototypeData,2) - 1, classes/2);
 [W, ~] = perceptron_network(inputAndPrototypeData, epochs, W, b, classes/2);
+disp(W);
 
 disp('Primer entrenamiento completado...');
 pass = test(W, b , test_set);
